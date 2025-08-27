@@ -1,4 +1,6 @@
-import React from 'react'
+"use client"
+
+import React, { useState } from 'react'
 import { Meteors } from "@/components/magicui/meteors";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +19,9 @@ import { RetroGrid } from "@/components/magicui/retro-grid";
 import { WarpBackground } from "@/components/magicui/warp-background";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 import { Pinyon_Script, Fascinate_Inline, Bangers } from "next/font/google";
+import { ArrowRight, Loader2 } from "lucide-react";
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 const pinyon = Pinyon_Script({
   weight: "400", // available weight(s)
@@ -30,6 +35,28 @@ const fascinate = Fascinate_Inline({
 
 
 const login = () => {
+
+  const [email, setEmail] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+
+  const handleSubmit = async(e: React.FormEvent):Promise<void> => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const {data} = await axios.post(`http://localhost:5000/api/v1/login`, {
+        email
+      })
+
+      alert(data.message);
+      router.push(`/verify?email=${email}`);
+    } catch (error:any) {
+      alert(error.response.data.message)
+    }finally{
+      setLoading(false);
+    }
+  }
+
   return (
     // <WarpBackground>
     // <div className=' min-h-screen flex items-center justify-center p-4 max-h-screen overflow-hidden'>
@@ -59,22 +86,33 @@ const login = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="name@example.com" />
+              <Label htmlFor="email" className='block text-lg font-medium text-gray-800 mb-2'>Email Address</Label>
+              <Input id="email" type="email" placeholder="name@example.com" className=' p-4 bg-gray-100 rounded-lg border-gray-700 border-2' required value={email} onChange={e=>setEmail(e.target.value)} />
             </div>
             {/* <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" />
             </div> */}
           </div>
+          <Button className="w-full flex items-center justify-center gap-2 my-7 hover:opacity-90 disabled:opacity-50 cursor-pointer" type='submit' disabled={loading}>
+            {loading ? <div  className='w-full flex items-center justify-center gap-2'>
+              <Loader2 className="w-6 h-6" />
+              <span>Sending OTP to your mail...</span>
+            </div> : 
+            <div className='w-full flex items-center justify-center gap-2'>
+              <span>Send verification code</span>
+              <ArrowRight className="w-6 h-6" />  
+            </div>}
+
+          </Button>
         </form>
       </CardContent>
-      <CardFooter>
+      {/* <CardFooter>
         <Button className="w-full">Sign In</Button>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
     
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Pinyon_Script, Bangers, DynaPuff } from "next/font/google";
+import { Pinyon_Script, Bangers, DynaPuff, Oxanium } from "next/font/google";
 
 const pinyon = Pinyon_Script({
   weight: "400", // available weight(s)
@@ -17,8 +17,13 @@ const dynapuff = DynaPuff({
   subsets: ["latin"], 
 })
 
+const oxanium = Oxanium({
+  weight: "500", // available weight(s)
+  subsets: ["latin"], 
+})
+
 export const metadata: Metadata = {
-  title: "YAPP",
+  title: "Amica",
   description: "Chat whenever you want, with whoever you want.",
 };
 
@@ -29,7 +34,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dynapuff.className} tracking-wide`}
+      <body 
+      className={
+        `
+        ${oxanium.className}
+      tracking-wide`}
       >
         {children}
       </body>

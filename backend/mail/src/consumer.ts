@@ -39,7 +39,7 @@ export const startSendOTPConsumer = async () => {
                     })
 
                     await transporter.sendMail({
-                        from: 'YAPP',
+                        from: 'Amica',
                         to,
                         subject,
                         text: body

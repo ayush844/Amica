@@ -18,10 +18,11 @@ import { ShineBorder } from "@/components/magicui/shine-border";
 import { RetroGrid } from "@/components/magicui/retro-grid";
 import { WarpBackground } from "@/components/magicui/warp-background";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
-import { Pinyon_Script, Fascinate_Inline, Bangers } from "next/font/google";
+import { Pinyon_Script, Fascinate_Inline, Bangers, Orbitron } from "next/font/google";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { BorderBeam } from '@/components/magicui/border-beam';
 
 const pinyon = Pinyon_Script({
   weight: "400", // available weight(s)
@@ -30,6 +31,11 @@ const pinyon = Pinyon_Script({
 
 const fascinate = Fascinate_Inline({
   weight: "400",       // Fascinate Inline only has one weight
+  subsets: ["latin"], 
+});
+
+const orbitron = Orbitron({
+  weight: "800",       // Fascinate Inline only has one weight
   subsets: ["latin"], 
 });
 
@@ -60,7 +66,7 @@ const login = () => {
   return (
     // <WarpBackground>
     // <div className=' min-h-screen flex items-center justify-center p-4 max-h-screen overflow-hidden'>
-    <div className="relative min-h-screen max-h-screen w-screen overflow-hidden flex items-center justify-center p-4">
+    <div className="relative min-h-screen max-h-screen w-screen overflow-hidden flex items-center justify-center p-4 bg-[#0B1D51]">
 
         {/* <Meteors number={100} /> */}
 
@@ -78,11 +84,11 @@ const login = () => {
     
     <Card className="relative overflow-hidden max-w-[550px] w-full z-50">
       <ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
-      <h1 className={`${fascinate.className} text-center font-bold font-sans text-4xl bg-gradient-to-r from-[#FF3F33] to-[#FF3F33] inline-block text-transparent bg-clip-text `}>... YAPP ...</h1>
+      <h1 className={`${orbitron.className} text-center font-bold font-sans text-5xl bg-gradient-to-r from-[#FF3F33] to-[#FF3F33] inline-block text-transparent bg-clip-text `}>Amica</h1>
       <CardHeader>
         <CardTitle className='text-center text-2xl'>Log In</CardTitle>
         <CardDescription className='text-center text-xl'>
-          Enter your email to Yapp on
+          Enter your email to start your journey
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -113,6 +119,18 @@ const login = () => {
       {/* <CardFooter>
         <Button className="w-full">Sign In</Button>
       </CardFooter> */}
+      <BorderBeam
+        duration={6}
+        size={800}
+        className="from-transparent via-red-500 to-transparent"
+      />
+      <BorderBeam
+        duration={6}
+        delay={3}
+        size={800}
+        borderWidth={4}
+        className="from-transparent via-blue-500 to-transparent"
+      />
     </Card>
     
 

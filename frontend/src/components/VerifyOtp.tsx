@@ -17,9 +17,12 @@ import { ShineBorder } from "@/components/magicui/shine-border";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 import { ArrowRight, ChevronLeft, Loader2 } from "lucide-react";
-import { useRouter, useSearchParams } from 'next/navigation';
+import { redirect, useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useAppData, user_service } from '@/context/AppContext';
+import Loading from './Loading';
+import toast from 'react-hot-toast';
 
 
 
@@ -35,6 +38,7 @@ const orbitron = Orbitron({
 
 
 const VerifyOtp = () => {
+    const {isAuth, setIsAuth, setUser, loading: userLoading} = useAppData();
     const [loading, setLoading] = useState<boolean>(false);
     const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
     const [error, setError] = useState<string>("");
@@ -103,18 +107,21 @@ const VerifyOtp = () => {
       setLoading(true);
 
       try {
-        const {data} = await axios.post("http://localhost:5000/api/v1/verify", {
+        const {data} = await axios.post(`${user_service}/api/v1/verify`, {
           email,
           otp: otpString
         })
-        alert(data.message);
-        Cookies.set("token", data.token, {
+        toast.success(data.message);
+        Cookies.set("amica-token", data.token, {
           expires: 15,
           secure: false,
           path: '/'
         });
         setOtp(["", "", "", "", "", ""]);
         inputRef.current[0]?.focus();
+
+        setUser(data.user);
+        setIsAuth(true);
       } catch (error: any) {
         setError(error?.response?.data?.message)
       } finally{
@@ -127,10 +134,10 @@ const VerifyOtp = () => {
       setResendLoading(true);
       setError("");
       try {
-        const {data} = await axios.post(`http://localhost:5000/api/v1/login`, {
+        const {data} = await axios.post(`${user_service}/api/v1/login`, {
           email
         });
-        alert(data.message);
+        toast.success(data.message);
         setTimer(60);
       } catch (error: any) {
         setError(error?.response?.data?.message)
@@ -139,6 +146,9 @@ const VerifyOtp = () => {
       }
     }
 
+    if(userLoading) return <Loading />
+
+    if(isAuth) redirect("/chat");
   return (
         <div className="relative min-h-screen max-h-screen w-screen overflow-hidden flex items-center justify-center p-4 bg-[#0B1D51]">
 

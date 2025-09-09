@@ -43,6 +43,12 @@ interface AppContextType{
     isAuth: boolean;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
+    logoutUser: () => Promise<void>;
+    fetchChats: () => Promise<void>;
+    fetchUsers: () => Promise<void>;
+    chats: Chats[] | null;
+    users: User[] | null;
+    setChats: React.Dispatch<React.SetStateAction<Chats[] | null>>
 }
 
 
@@ -107,13 +113,31 @@ export const AppProvider: React.FC<AppProviderProps> = ({children}) => {
         }
     }
 
+    const [users, setUsers] = useState<User[] | null>(null);
+
+    async function fetchUsers(){
+        const token = Cookies.get("amica-token")
+        
+        try {
+            const {data} = await axios.get(`${user_service}/api/v1/users/all`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            })
+            setUsers(data);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         fetchUser();
         fetchChats();
+        fetchUsers();
     }, []);
 
     return (
-    <AppContext.Provider value={{user, setUser, isAuth, setIsAuth, loading}}>
+    <AppContext.Provider value={{user, setUser, isAuth, setIsAuth, loading, logoutUser, fetchChats, fetchUsers, chats, setChats, users}}>
         {children}
         <Toaster />
     </AppContext.Provider>)

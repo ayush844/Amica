@@ -38,7 +38,7 @@ const orbitron = Orbitron({
 
 
 const VerifyOtp = () => {
-    const {isAuth, setIsAuth, setUser, loading: userLoading} = useAppData();
+    const {isAuth, setIsAuth, setUser, loading: userLoading, fetchChats, fetchUsers} = useAppData();
     const [loading, setLoading] = useState<boolean>(false);
     const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
     const [error, setError] = useState<string>("");
@@ -122,6 +122,9 @@ const VerifyOtp = () => {
 
         setUser(data.user);
         setIsAuth(true);
+
+        fetchChats();
+        fetchUsers();
       } catch (error: any) {
         setError(error?.response?.data?.message)
       } finally{

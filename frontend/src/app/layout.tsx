@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Pinyon_Script, Bangers, DynaPuff, Oxanium } from "next/font/google";
 import { AppProvider } from "@/context/AppContext";
+import { SocketProvider } from "@/context/SocketContext";
 
 const pinyon = Pinyon_Script({
   weight: "400", // available weight(s)
@@ -42,7 +43,9 @@ export default function RootLayout({
       tracking-wide`}
       >
         <AppProvider>
-        {children}
+          <SocketProvider>
+            {children}
+        </SocketProvider>
         </AppProvider>
       </body>
     </html>

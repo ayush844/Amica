@@ -15,9 +15,10 @@ interface ChatSidebarProps{
     setSelectedUser: (userId: string | null) => void;
     handleLogout: ()=>void;
     createChat: (user: User) => Promise<void>;
+    onlineUsers: string[];
 }
 
-const ChatSidebar = ({sidebarOpen, setSidebarOpen, showAllUsers, setShowAllUsers, users, loggedInUser, chats, selectedUser, setSelectedUser, handleLogout, createChat}: ChatSidebarProps) => {
+const ChatSidebar = ({sidebarOpen, setSidebarOpen, showAllUsers, setShowAllUsers, users, loggedInUser, chats, selectedUser, setSelectedUser, handleLogout, createChat, onlineUsers}: ChatSidebarProps) => {
 
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -62,8 +63,12 @@ const ChatSidebar = ({sidebarOpen, setSidebarOpen, showAllUsers, setShowAllUsers
                                 <div className="flex items-center gap-3">
                                     <div className="relative">
                                         <UserCircle className=' w-6 h-6 text-gray-300' />
+                                        {
+                                            onlineUsers.includes(u._id) && (
+                                                <span className=' absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-green-500 border-2 border-gray-900' />
+                                            )
+                                        }
                                     </div>
-                                    {/* online symbol dikhana hai */}
 
                                     <div className="flex-1 min-w-0">
                                     <span className=' font-medium text-white'>
@@ -71,6 +76,7 @@ const ChatSidebar = ({sidebarOpen, setSidebarOpen, showAllUsers, setShowAllUsers
                                     </span>
                                     <div className=' text-xs text-gray-400 mt-0.5'>
                                         {/* will show online offline text */}
+                                        {onlineUsers.includes(u._id)?"Online":"Offline"}
                                     </div>
                                 </div>
                                 </div>
@@ -99,6 +105,11 @@ const ChatSidebar = ({sidebarOpen, setSidebarOpen, showAllUsers, setShowAllUsers
                                                 <UserCircle className=' w-7 h-7 text-gray-300' />
                                                 {/* online user ka work hai */}
                                             </div>
+                                            {
+                                                onlineUsers.includes(chat.user._id) && (
+                                                    <span className=' absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-green-500 border-2 border-gray-900' />
+                                                )
+                                            }
                                         </div>
 
                                         <div className=" flex-1 min-w-0">

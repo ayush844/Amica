@@ -308,13 +308,13 @@ const ChatApp = () => {
               return {
                 ...msg,
                 seen: true,
-                seenAt: new Date().toString()
+                seenAt: new Date()
               }
             }else if(msg.sender === loggedinUser?._id && !data.messageIds){
               return {
                 ...msg,
                 seen: true,
-                seenAt: new Date().toString()
+                seenAt: new Date()
               }
             }
 

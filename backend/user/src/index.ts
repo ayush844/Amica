@@ -6,19 +6,20 @@ import userRoutes from './routes/user.js';
 import { connectRabbitMQ } from './config/rabbitmq.js';
 import cors from 'cors';
 
-
+// Reads values from your .env file
 dotenv.config();
 
+// Establishes connections to MongoDB and RabbitMQ
 connectDB();
 
 connectRabbitMQ();
 
-
+// Creates a Redis client instance that can be imported and used elsewhere in your app.
 export const redisClient = createClient({
     url: process.env.REDIS_URL
 })
 
-
+// Connects asynchronously and logs whether it was successful or not.
 redisClient.connect().then(() => {
     console.log("Connected to Redis successfully");
 }).catch((error) => {
